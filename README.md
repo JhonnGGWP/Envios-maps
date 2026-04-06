@@ -1,28 +1,95 @@
 <html>
-<!DOCTYPE html>   
 <head>
 <meta charset="utf-8">
-<title>Rutas de Entrega</title>
+<title>ENVÍOS MAPA</title>
+
 <style>
-body { font-family: Arial; background:#111; color:#fff; text-align:center; }
-input, button { padding:10px; margin:5px; width:85%; }
-.item { background:#222; padding:8px; margin:5px; }
+body {
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background:#0c0c0e;
+    color:white;
+    text-align:center;
+}
+
+h1 {
+    margin-top:20px;
+    font-weight:600;
+    font-size:28px;
+}
+
+.container {
+    padding:15px;
+}
+
+input {
+    width:90%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:12px;
+    border:none;
+    background:#1c1c1e;
+    color:white;
+    font-size:16px;
+}
+
+button {
+    width:90%;
+    padding:12px;
+    margin:6px 0;
+    border:none;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:500;
+    background:#2c2c2e;
+    color:white;
+}
+
+button:active {
+    background:#3a3a3c;
+}
+
+.lista {
+    margin-top:10px;
+}
+
+.item {
+    background:#1c1c1e;
+    margin:6px auto;
+    padding:10px;
+    border-radius:12px;
+    width:90%;
+    text-align:left;
+    font-size:14px;
+}
+
+.estado {
+    margin-top:15px;
+    font-size:14px;
+    opacity:0.8;
+}
 </style>
 </head>
+
 <body>
 
-<h2>📦 Entregas</h2>
+<h1>ENVÍOS MAPA</h1>
 
-<input id="direccion" placeholder="Ej: San Benito 681, Merlo Buenos Aires">
-<button onclick="agregar()">Agregar</button>
+<div class="container">
 
-<div id="lista"></div>
+<input id="direccion" placeholder="Ej: San Benito 681, Merlo">
+
+<button onclick="agregar()">Agregar destino</button>
+
+<div id="lista" class="lista"></div>
 
 <button onclick="invertir()">Invertir orden</button>
-<button onclick="iniciar()">Iniciar</button>
-<button onclick="siguiente()">Siguiente</button>
+<button onclick="iniciar()">Iniciar ruta</button>
+<button onclick="siguiente()">Siguiente destino</button>
 
-<p id="estado"></p>
+<p id="estado" class="estado"></p>
+
+</div>
 
 <script>
 let destinos = [];
@@ -30,10 +97,8 @@ let actual = 0;
 
 function agregar() {
     let dir = document.getElementById("direccion").value.trim();
-
     if (!dir) return;
 
-    // 🔥 Forzar contexto Argentina (mejora precisión)
     dir += ", Buenos Aires, Argentina";
 
     if (destinos.length < 10) {
@@ -67,7 +132,7 @@ function siguiente() {
     if (actual < destinos.length) {
         irADestino();
     } else {
-        document.getElementById("estado").innerText = "✔️ Terminaste todas las entregas";
+        document.getElementById("estado").innerText = "✔️ Entregas finalizadas";
     }
 }
 
@@ -75,13 +140,11 @@ function irADestino() {
     let destino = destinos[actual];
     document.getElementById("estado").innerText = "🚗 Navegando a: " + destino;
 
-    // 🔥 URL navegación directa (IMPORTANTE)
     let url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destino)}&travelmode=driving`;
 
-    window.location.href = url; // abre directo en Maps
+    window.location.href = url;
 }
 
-// ubicación en tiempo real (opcional)
 navigator.geolocation.watchPosition(pos => {
     console.log("Ubicación:", pos.coords.latitude, pos.coords.longitude);
 });
